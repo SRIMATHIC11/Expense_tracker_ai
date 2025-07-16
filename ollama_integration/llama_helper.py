@@ -4,28 +4,16 @@ def get_ai_suggestion(expenses):
     if not expenses:
         return "No expenses to analyze."
 
-    prompt = "Analyze this spending and suggest one tip to save money:\nHere are my recent expenses:\n"
     
+    category_totals = {}
     for expense in expenses:
-        try:
-            # Safely extract data with fallback
-            category = expense[1] if len(expense) > 1 else "Unknown"
-            amount = expense[2] if len(expense) > 2 else "0"
-            date = expense[3] if len(expense) > 3 else "Unknown date"
-            description = expense[4] if len(expense) > 4 else "No description"
-            
-            prompt += f"{date} - {category} - ₹{amount}: {description}\n"
-        except Exception as e:
-            prompt += f"Incomplete record: {expense}\n"
+        category = expense[1] if len(expense) > 1 else "Unknown"
+        amount = float(expense[2]) if len(expense) > 2 else 0
+        category_totals[category] = category_totals.get(category, 0) + amount
 
-    try:
-        result = subprocess.run(
-            ["ollama", "run", "mistral"],
-            input=prompt,
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        return f"Failed to get AI suggestion: {e}"
+    if not category_totals:
+        return "No spending data to analyze."
+
+    top_category = max(category_totals, key=category_totals.get)
+    top_amount = category_totals[top_category]
+    return f"You spent the most on {top_category} (₹{top_amount:.2f}). Try to set a budget for this category next month!"

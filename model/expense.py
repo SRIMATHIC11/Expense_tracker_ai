@@ -1,4 +1,10 @@
 class Expense:
+
+    def delete_expense(self, user_id, expense_id):
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM expenses WHERE user_id=? AND id=?", (user_id, expense_id))
+        self.conn.commit()
+        return cursor.rowcount > 0
     def __init__(self, db):
         self.conn = db.get_connection()
 

@@ -66,7 +66,6 @@ def extract_expense_from_image(image_path):
             elif all_numbers:
                 total = max(all_numbers)
             else:
-                print("[DEBUG] No valid total found.")
                 return None
 
         return {

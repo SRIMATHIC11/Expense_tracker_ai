@@ -46,7 +46,7 @@ class ExpenseTrackerController:
                 elif choice == "3":
                     expenses = self.expense_model.get_expenses(self.current_user_id)
                     suggestion = get_ai_suggestion(expenses)
-                    self.view.show_message(f"💡 AI Suggestion: {suggestion}")
+                    self.view.show_message(f"AI Suggestion: {suggestion}")
                 elif choice == "4":
                     from model.bill_item import BillItem
                     expense_id = self.expense_model.get_last_expense_id()
@@ -63,11 +63,11 @@ class ExpenseTrackerController:
                         self.db.add_expense(self.current_user_id, data['category'], data['amount'], date, note)
                         from model.bill_item import BillItem
                         expense_id = self.expense_model.get_last_expense_id()
-                        # Add all extracted products as bill items
+                        
                         products = data.get('products', [])
                         if products:
                             BillItem(self.db).add_bill_items(expense_id, products)
-                        # Add a final total row
+                        
                         BillItem(self.db).add_item(expense_id, 'TOTAL', '', '', data['amount'])
                         print(f"Added Rs.{data['amount']} to {data['category']} on {date}")
                     else:

@@ -49,10 +49,10 @@ class BillItem:
         items = self.get_items_by_expense(expense_id)
 
         if not items:
-            console.print("❌ No items found for this expense.", style="bold red")
+            console.print(" No items found for this expense.", style="bold red")
             return
 
-        table = Table(title=f"📦 Items for Expense ID: {expense_id}", show_lines=True)
+        table = Table(title=f" Items for Expense ID: {expense_id}", show_lines=True)
 
         table.add_column("Product Name", style="cyan", justify="left")
         table.add_column("Qty", style="magenta", justify="center")
